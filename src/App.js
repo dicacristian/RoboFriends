@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import Card from "./components/card/Card";
+import { Container } from "./components/card/Card.style";
 
 function App() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) => res.json())
+      .then((data) => setData(data));
+  }, []);
+
+  const cardList = data.map((user) => {
+    return <Card id={user.id} name={user.name} email={user.email}></Card>;
+  });
+
+  const [robot, setRobot] = useState("");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1 className="title">ROBOFRIENDS</h1>
+      <input
+        className="input-name"
+        type="search"
+        placeholder="search robots"
+      ></input>
+      <div className="styles"> {cardList} </div>
     </div>
   );
 }
